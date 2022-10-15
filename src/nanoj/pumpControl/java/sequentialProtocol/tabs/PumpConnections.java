@@ -68,7 +68,7 @@ public class PumpConnections extends JPanel {
         disconnectButton.addActionListener(new PumpConnections.Disconnect());
 
         //设置字体
-        Font newFont = new Font("Time New Roman",Font.PLAIN,12);
+        Font newFont = new Font("Time New Roman",Font.PLAIN,14);
         pumpListLabel.setFont(newFont);
         connectLabel.setFont(newFont);
         connectButton.setFont(newFont);
