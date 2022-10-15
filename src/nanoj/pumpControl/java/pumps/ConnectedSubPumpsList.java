@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class ConnectedSubPumpsList implements Iterable<ConnectedSubPump> {
-    private ArrayList<ConnectedSubPump> list = new ArrayList<ConnectedSubPump>();
-    private ArrayList<Pump> connectedPumps = new ArrayList<Pump>();
+    private ArrayList<ConnectedSubPump> list = new ArrayList<ConnectedSubPump>(); // 存储连接的subPump
+    private ArrayList<Pump> connectedPumps = new ArrayList<Pump>(); // 存储连接的Pump
 
     private static final String OUT_OF_BOUNDS = "SubPump index doesn't exist in list.";
 
@@ -14,30 +14,41 @@ public class ConnectedSubPumpsList implements Iterable<ConnectedSubPump> {
     }
 
     public void addPump(Pump pump) {
-        for (String subPump: pump.subPumps)
+        for (String subPump : pump.subPumps)
             list.add(new ConnectedSubPump(pump, subPump));
         connectedPumps.add(pump);
     }
 
-    public void removePump(String pumpName,String port) {
+    /**
+     * 这个方法用来移除Pump当指定某个pumpName和port断开连接时
+     *
+     * @param pumpName：Pump名称
+     * @param port：端口名（COM）
+     */
+    public void removePump(String pumpName, String port) {
         ArrayList<ConnectedSubPump> pumpsToRemove = new ArrayList<ConnectedSubPump>();
-        for (ConnectedSubPump pump: list)
+        for (ConnectedSubPump pump : list)
             if (pump.name.equals(pumpName) && pump.port.equals(port))
                 pumpsToRemove.add(pump);
 
-        for (ConnectedSubPump pumpToRemove: pumpsToRemove)
+        for (ConnectedSubPump pumpToRemove : pumpsToRemove) //在ConnectedSubPump中移除掉断开连接的subPump
             list.remove(pumpToRemove);
 
-        for (ConnectedSubPump pump: list)
+        for (ConnectedSubPump pump : list)
             if (pump.name.equals(pumpName) && pump.port.equals(port)) {
                 connectedPumps.remove(pump.pump);
                 break;
             }
     }
 
+    /**
+     * 这个方法用来移除Pump当断开连接时
+     *
+     * @param pump:
+     */
     public void removePump(Pump pump) {
         ArrayList<ConnectedSubPump> found = new ArrayList<ConnectedSubPump>();
-        for (ConnectedSubPump subPump: list)
+        for (ConnectedSubPump subPump : list)
             if (subPump.pump.equals(pump))
                 found.add(subPump);
 
@@ -51,9 +62,8 @@ public class ConnectedSubPumpsList implements Iterable<ConnectedSubPump> {
         ConnectedSubPump result = null;
         for (ConnectedSubPump connectedSubPump : list)
             if (connectedSubPump.name.equals(name) &&
-                connectedSubPump.subPump.equals(subPump) &&
-                connectedSubPump.port.equals(port))
-            {
+                    connectedSubPump.subPump.equals(subPump) &&
+                    connectedSubPump.port.equals(port)) {
                 result = connectedSubPump;
                 break;
             }
@@ -65,7 +75,7 @@ public class ConnectedSubPumpsList implements Iterable<ConnectedSubPump> {
 
     public Pump getPump(String pumpName, String port) throws PumpNotFoundException {
         Pump pump = null;
-        for (ConnectedSubPump subPump: list)
+        for (ConnectedSubPump subPump : list)
             if (subPump.name.equals(pumpName) && subPump.port.equals(port)) {
                 pump = subPump.pump;
                 break;
@@ -136,7 +146,7 @@ public class ConnectedSubPumpsList implements Iterable<ConnectedSubPump> {
 
     public ArrayList<String> connectedPorts() {
         ArrayList<String> ports = new ArrayList<String>();
-        for (ConnectedSubPump pump: list) {
+        for (ConnectedSubPump pump : list) {
             if (!ports.contains(pump.port))
                 ports.add(pump.port);
         }
@@ -149,7 +159,12 @@ public class ConnectedSubPumpsList implements Iterable<ConnectedSubPump> {
     }
 
     public static class PumpNotFoundException extends RuntimeException {
-        public PumpNotFoundException() { super();}
-        public PumpNotFoundException(String message) { super(message);}
+        public PumpNotFoundException() {
+            super();
+        }
+
+        public PumpNotFoundException(String message) {
+            super(message);
+        }
     }
 }

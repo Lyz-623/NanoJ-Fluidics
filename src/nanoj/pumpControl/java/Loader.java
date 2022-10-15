@@ -12,7 +12,7 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 
 /**
- * An utility to add classes to the classpath. It loads either all Jars or native libraries in a given directory.
+ * A utility to add classes to the classpath. It loads either all Jars or native libraries in a given directory.
  */
 public class Loader {
     static final ArrayList<File> NO_FILE_FOUND = new ArrayList<File>();
@@ -60,11 +60,12 @@ public class Loader {
                 System.load(currentFile.getPath());
                 System.out.println("Loaded the library: " + currentFile.getName());
             } catch(UnsatisfiedLinkError e){
-                System.err.println("Native code library failed to load.\n" + e);
+                System.err.println("Native code library failed to load.\n" + e); //需要VC++2010
                 System.exit(1);
             }
         }
     }
+    //test
 
     public static ArrayList<File> findFilesOfType(URL url, String termination) throws MalformedURLException{
         File folder = new File(url.getPath());

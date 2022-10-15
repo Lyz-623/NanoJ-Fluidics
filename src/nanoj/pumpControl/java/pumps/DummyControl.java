@@ -4,6 +4,7 @@ import nanoj.pumpControl.java.sequentialProtocol.GUI;
 
 public final class DummyControl extends Pump implements PumpInterface {
     private GUI.Log log;
+
     private boolean demo = false;
 
     public DummyControl() {
@@ -20,7 +21,7 @@ public final class DummyControl extends Pump implements PumpInterface {
                     "S2,P2",
                     "S2,P3",
                     "S2,P4",
-                    "S3,P1"};
+                    };
         } else {
             name = "Virtual pump";
             subPumps = new String[]{"Sub 1", "Sub 2", "Sub 3"};

@@ -249,7 +249,7 @@ public class SequentialLabelling extends JPanel implements Observer, ActionListe
                     for (int s = 0; s < difference; s++) {
                         int currentStep = steps_on_list + s;
                         // Add to the current step list a new step object with the current index.
-                        // The name of the step will be it's index on the list.
+                        // The name of the step will be its index on the list.
                         Step step = new Step(currentStep + 1);
                         step.addActionListener(updateStepPump);
                         sequence.add(step);

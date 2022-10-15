@@ -6,6 +6,11 @@ public class ConnectedSubPump {
     public final String port;
     public final String subPump;
 
+    /**
+     *
+     * @param pump:
+     * @param subPump:
+     */
     public ConnectedSubPump(Pump pump, String subPump) {
         this.pump = pump;
         this.name = pump.name;

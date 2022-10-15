@@ -1,20 +1,23 @@
 package nanoj.pumpControl.java.sequentialProtocol.tabs;
 
-import gnu.io.NRSerialPort;
+import gnu.io.NRSerialPort; //串口通信包
 import nanoj.pumpControl.java.pumps.ConnectedSubPump;
 import nanoj.pumpControl.java.pumps.Pump;
 import nanoj.pumpControl.java.pumps.PumpManager;
 import nanoj.pumpControl.java.sequentialProtocol.GUI;
 
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 import java.util.prefs.Preferences;
 
 public class PumpConnections extends JPanel {
+    //版本号
+    JLabel version = new JLabel("version: 2022/10/14");
+
     private Preferences prefs = Preferences.userRoot().node(this.getClass().getName());
     private PumpManager pumpManager = PumpManager.INSTANCE;
     private GUI gui;
@@ -25,39 +28,57 @@ public class PumpConnections extends JPanel {
     private static final String PORT = "com";
     private static final String PUMP = "pump";
 
+    //pump选择
+    JLabel pumpListLabel = new JLabel("Pump type");
     JComboBox availablePumpsList;
 
-    JLabel version = new JLabel("NanoJ Sequential Labelling version: 1.2.5");
-    JLabel pumpListLabel = new JLabel("Pump type");
+    //串口选择
     JLabel connectLabel = new JLabel("Serial port");
     JComboBox portsList;
+
+    //pump连接+断开连接按钮
     JButton connectButton = new JButton("Connect");
     JButton disconnectButton = new JButton("Disconnect");
+
+    //当前连接的pump列表
     JLabel connectedPumpsLabel = new JLabel("List of currently connected pumps");
     private JTable connectedPumpsTable;
     private ConnectionsTable connectedPumpsTableModel;
     JScrollPane connectedPumpsListPane;
 
     public PumpConnections(GUI gui) {
-        super();
+        super(); //当前父类
         this.gui = gui;
 
         connectedPumpsTableModel = new ConnectionsTable();
         connectedPumpsTable = new JTable(connectedPumpsTableModel);
         connectedPumpsListPane = new JScrollPane(connectedPumpsTable);
 
-        availablePumpsList = new JComboBox(pumpManager.getAvailablePumpsList());
+        availablePumpsList = new JComboBox(pumpManager.getAvailablePumpsList()); //获取可连接的pump
         availablePumpsList.setSelectedItem(prefs.get(PUMP, VIRTUAL_PUMP));
 
         portsList = new JComboBox(new Vector(NRSerialPort.getAvailableSerialPorts()));
         portsList.addItem(VIRTUAL_PORT);
         portsList.setSelectedItem(prefs.get(PORT, VIRTUAL_PORT));
 
-        setLayout( new PumpConnectionsLayout(this));
+        setLayout( new PumpConnectionsLayout(this) ); //布局
 
+        //点击操作监视器
         connectButton.addActionListener(new PumpConnections.Connect());
         disconnectButton.addActionListener(new PumpConnections.Disconnect());
 
+        //设置字体
+        Font newFont = new Font("Time New Roman",Font.PLAIN,12);
+        pumpListLabel.setFont(newFont);
+        connectLabel.setFont(newFont);
+        connectButton.setFont(newFont);
+        disconnectButton.setFont(newFont);
+        connectedPumpsLabel.setFont(newFont);
+        version.setFont(newFont);
+        availablePumpsList.setFont(newFont);
+        portsList.setFont(newFont);
+        connectedPumpsTable.setFont(newFont);
+        connectedPumpsListPane.setFont(newFont);
     }
 
     public void rememberSettings() {
@@ -138,5 +159,4 @@ public class PumpConnections extends JPanel {
         }
 
     }
-
 }

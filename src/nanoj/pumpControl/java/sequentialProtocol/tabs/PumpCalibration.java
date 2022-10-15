@@ -20,7 +20,7 @@ import java.util.Observer;
 import java.util.prefs.Preferences;
 
 public class PumpCalibration extends JPanel implements Observer, TableModelListener, ActionListener {
-    private Preferences prefs = Preferences.userRoot().node(this.getClass().getName());
+    private Preferences prefs = Preferences.userRoot().node(this.getClass().getName()); //将偏好存储在userRoot中
     private PumpManager pumpManager = PumpManager.INSTANCE;
     private GUI gui;
     public String name = "Pump Calibration";

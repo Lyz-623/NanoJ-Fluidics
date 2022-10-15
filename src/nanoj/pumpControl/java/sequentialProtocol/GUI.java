@@ -22,7 +22,6 @@ import java.util.*;
 public final class GUI {
     public PumpManager pumpManager;
     private boolean closeOnExit = false;
-
     // Log object
     public Log log = Log.INSTANCE;
 
@@ -65,12 +64,12 @@ public final class GUI {
             ReportingUtils.logError(e);
         }
 
-        // Adapt dimensions to the windows look and feel
+        // 适配Windows系统的GUI尺寸
         if (SystemUtils.IS_OS_WINDOWS) {
-            connectionsDimensions = new Dimension(500, 270);
-            controlDimensions = new Dimension(500, 240);
-            calibrationDimensions = new Dimension(600, 350);
-            sequenceDimensions = new Dimension(840, 425);
+            connectionsDimensions = new Dimension(1000, 400);
+            controlDimensions = new Dimension(1000, 400);
+            calibrationDimensions = new Dimension(1000, 400);
+            sequenceDimensions = new Dimension(1000, 400);
             logDimensions = new Dimension(500, 100);
         }
     }
@@ -78,17 +77,17 @@ public final class GUI {
     void create(CMMCore core) throws Exception {
         if (mainFrame != null && mainFrame.isVisible())
             return;
-
         //Initiate PumpManager
         pumpManager = PumpManager.INSTANCE;
         pumpManager.setCore(core);
         pumpManager.loadPlugins();
-        // GUI objects and layout.
-        mainFrame = new JFrame("Pump Control and Sequential Protocol");
-        JSplitPane mainPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 
+        // GUI objects and layout.
+        mainFrame = new JFrame("自动加样控制程序");
+        JSplitPane mainPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         JScrollPane logPane = new JScrollPane(
                 log, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
         topPane = new JTabbedPane();
 
         //Tab objects
@@ -113,6 +112,7 @@ public final class GUI {
         topPane.addTab(directControl.name, directControl);
         topPane.addTab(pumpCalibration.name, pumpCalibration);
         topPane.addTab(sequentialLabelling.name, sequentialLabelling);
+        topPane.setFont(new Font("Time New Roman",Font.PLAIN,12));
 
         mainPanel.setTopComponent(topPane);
         mainPanel.setBottomComponent(logPane);
@@ -122,8 +122,9 @@ public final class GUI {
         if (closeOnExit) mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         updateGUI();
-
+        mainFrame.setSize(1150,600);
         mainFrame.setVisible(true);
+
     }
 
     public void dispose() {
@@ -183,8 +184,8 @@ public final class GUI {
     public boolean sequenceRunning() { return sequentialLabelling.sequenceManager.isStarted(); }
 
     public void updateGUI() {
-        mainFrame.validate();
-        mainFrame.pack();
+//        mainFrame.validate();
+//        mainFrame.pack();
     }
 
     // Private classes
