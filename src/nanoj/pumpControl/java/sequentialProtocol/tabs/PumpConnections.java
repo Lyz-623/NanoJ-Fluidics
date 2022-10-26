@@ -11,12 +11,14 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import java.util.Vector;
 import java.util.prefs.Preferences;
 
 public class PumpConnections extends JPanel {
     //版本号
-    JLabel version = new JLabel("version: 2022/10/14");
+    Date c = new Date();
+    JLabel version = new JLabel(c.toString());
 
     private Preferences prefs = Preferences.userRoot().node(this.getClass().getName());
     private PumpManager pumpManager = PumpManager.INSTANCE;
@@ -66,19 +68,6 @@ public class PumpConnections extends JPanel {
         //点击操作监视器
         connectButton.addActionListener(new PumpConnections.Connect());
         disconnectButton.addActionListener(new PumpConnections.Disconnect());
-
-        //设置字体
-        Font newFont = new Font("Time New Roman",Font.PLAIN,14);
-        pumpListLabel.setFont(newFont);
-        connectLabel.setFont(newFont);
-        connectButton.setFont(newFont);
-        disconnectButton.setFont(newFont);
-        connectedPumpsLabel.setFont(newFont);
-        version.setFont(newFont);
-        availablePumpsList.setFont(newFont);
-        portsList.setFont(newFont);
-        connectedPumpsTable.setFont(newFont);
-        connectedPumpsListPane.setFont(newFont);
     }
 
     public void rememberSettings() {

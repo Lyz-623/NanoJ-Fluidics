@@ -107,6 +107,7 @@ public final class GUI {
         logPane.setPreferredSize(logDimensions);
 
         log.set("NanoJ Sequential Labelling");
+        log.setFont(new Font("Time New Roman",Font.PLAIN,15));
 
         topPane.addTab(pumpConnections.name, pumpConnections);
         topPane.addTab(directControl.name, directControl);

@@ -7,13 +7,7 @@ public enum  Syringe {
     BD10( 10, "BD", 14.427),
     BD5( 5,"BD",  11.989),
     BD2( 2, "BD", 8.7),
-    BD1( 1, "BD", 4.699),
-    TER60( 60, "Terumo", 29.7),
-    TER30( 30, "Terumo", 23.1),
-    TER20( 20, "Terumo", 20.15),
-    TER10( 10, "Terumo", 15.8),
-    TER5( 5,"Terumo",  13),
-    TER1( 1, "Terumo", 4.699);
+    BD1( 1, "BD", 4.699);
 
     public static final String VOLUME_UNITS = "ml";
     public final double volume;

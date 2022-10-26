@@ -5,12 +5,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class StopButton extends JButton implements ActionListener {
-    private JComboBox pumpSelection = null;
-    private GUI gui;
-    private int pump = -1;
+    private JComboBox pumpSelection = null; //下拉列表框
+    private GUI gui; //private同类获取
+    private int pump = -1; // pump用数字来区分
 
     public StopButton(GUI gui) {
-        super("Stop Pump!");
+        super("Stop Pump");
         this.gui = gui;
         this.pumpSelection = null;
 
@@ -18,7 +18,7 @@ public class StopButton extends JButton implements ActionListener {
     }
 
     public StopButton(GUI gui, JComboBox pumpSelection) {
-        super("Stop Pump!");
+        super("Stop Pump");
         this.gui = gui;
         this.pumpSelection = pumpSelection;
 
@@ -40,7 +40,7 @@ public class StopButton extends JButton implements ActionListener {
                 return;
             }
 
-            gui.pumpManager.stopPumping(pump);
+            gui.pumpManager.stopPumping(pump); //stop pump
             gui.log.message("Told pump " + gui.pumpManager.getAllFullNames()[pump] + " to stop!");
 
         } catch (Exception e1) {

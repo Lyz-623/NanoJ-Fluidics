@@ -48,19 +48,20 @@ public class Loader {
     public static void loadLibrary(URL url) throws FileNotFoundException, MalformedURLException {
         String lib;
 
-        if (SystemUtils.IS_OS_WINDOWS) lib = DLL;
+        if (SystemUtils.IS_OS_WINDOWS) lib = DLL; //dll=Dynamic Link Library
         else lib = JNILIB;
 
         ArrayList<File> listOfFiles = findFilesOfType(url, lib);
         if (listOfFiles.isEmpty())
             throw new FileNotFoundException("Did not find library files in " + url.getPath());
 
+        //need VC++2010(or below) to successfully load some dll files
         for (File currentFile : listOfFiles) {
             try {
                 System.load(currentFile.getPath());
                 System.out.println("Loaded the library: " + currentFile.getName());
             } catch(UnsatisfiedLinkError e){
-                System.err.println("Native code library failed to load.\n" + e); //需要VC++2010
+                System.err.println("Native code library failed to load.\n" + e);
                 System.exit(1);
             }
         }

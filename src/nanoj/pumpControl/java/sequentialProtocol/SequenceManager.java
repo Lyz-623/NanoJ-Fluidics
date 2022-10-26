@@ -41,7 +41,7 @@ public class SequenceManager extends Observable implements Runnable {
     }
 
     @Override
-    public void run(){
+    public void run() {
         while (alive) {
             if (started) {
                 for (currentStep = startStep; currentStep < endStep; currentStep++) {
@@ -87,13 +87,14 @@ public class SequenceManager extends Observable implements Runnable {
                             setWaitingMessage("Withdrawal step. Waiting for: " + formattedTime);
                         else
                             setWaitingMessage("Withdrawal step. Waiting for: " +
-                                    Math.round(timeToGo/1000) + " seconds");
+                                    Math.round(timeToGo / 1000) + " seconds");
 
                         try {
                             Thread.sleep(300);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+
                     }
 
                     try {
@@ -106,7 +107,7 @@ public class SequenceManager extends Observable implements Runnable {
                                 step.getAction()
                         );
 
-                        setChanged();
+                        setChanged(); //
                         notifyObservers(NEW_STEP_STARTED);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -117,27 +118,27 @@ public class SequenceManager extends Observable implements Runnable {
                     // If this isn't the last step, then set the "syringe ready" status to false. This makes
                     // the sequence wait until the user has confirmed the syringe exchange.
                     if (currentStep < endStep) setMonkeyReady(false);
-                        // If it IS the last step, then we can stop now.
+                        // If it is the last step, then we can stop now.
                     else {
                         stop();
                         setWaitingMessage("Sequence finished.");
                         break;
                     }
 
-                    if (currentStep < endStep-1)
-                        syringeExchangeNeeded = sequence.get(currentStep+1).isSyringeExchangeRequired();
+                    if (currentStep < endStep - 1)
+                        syringeExchangeNeeded = sequence.get(currentStep + 1).isSyringeExchangeRequired();
 
                     setChanged();
                     notifyObservers(SYRINGE_STATUS_CHANGED);
 
                     // While the time between steps hasn't passed OR the syringe hasn't been readied...
-                    while ( (System.currentTimeMillis() - startTime) < step.getDuration()*1000 ||
+                    while ((System.currentTimeMillis() - startTime) < step.getDuration() * 1000 ||
                             !monkeyReady && syringeExchangeNeeded) {
                         //Stop sequence if the "Stop" button was pressed.
                         if (!started) break;
 
                         //Calculate how much time there is still to go in seconds.
-                        float timeToGo = (step.getDuration()*1000 - (float) (System.currentTimeMillis() - startTime));
+                        float timeToGo = (step.getDuration() * 1000 - (float) (System.currentTimeMillis() - startTime));
 
                         String formattedTime = format.format(new Date((long) timeToGo));
 
@@ -190,8 +191,8 @@ public class SequenceManager extends Observable implements Runnable {
         this.sequence = givenSteps;
         isSyringeExchangeRequiredOnSequence();
 
-        start = (start < 0) ? 0 : start;
-        end = (end > givenSteps.size()) ? givenSteps.size() : end;
+        start = Math.max(start, 0);
+        end = Math.min(end, givenSteps.size());
 
         startStep = start;
         endStep = end;
@@ -200,7 +201,7 @@ public class SequenceManager extends Observable implements Runnable {
 
     public void isSyringeExchangeRequiredOnSequence() {
         syringeExchangeNeeded = false;
-        for (Step step: sequence) {
+        for (Step step : sequence) {
             if (step.isSyringeExchangeRequired()) {
                 syringeExchangeNeeded = true;
                 break;
@@ -236,9 +237,13 @@ public class SequenceManager extends Observable implements Runnable {
         notifyObservers(WAITING_MESSAGE);
     }
 
-    public synchronized boolean isSyringeExchangeNeeded() { return syringeExchangeNeeded; }
+    public synchronized boolean isSyringeExchangeNeeded() {
+        return syringeExchangeNeeded;
+    }
 
-    public synchronized boolean isStarted() { return started; }
+    public synchronized boolean isStarted() {
+        return started;
+    }
 
     public synchronized String getWaitingMessage() {
         return waitingMessage;
@@ -259,5 +264,7 @@ public class SequenceManager extends Observable implements Runnable {
         return currentStep;
     }
 
-    public void defineSequence(Sequence givenSteps) { sequence = givenSteps; }
+    public void defineSequence(Sequence givenSteps) {
+        sequence = givenSteps;
+    }
 }

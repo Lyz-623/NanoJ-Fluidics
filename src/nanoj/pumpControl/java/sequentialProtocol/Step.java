@@ -19,18 +19,18 @@ public class Step extends Observable implements Observer, ActionListener {
 
     // Foreign objects
     private PumpManager pumpManager = PumpManager.INSTANCE;
-
     // Labels
-
     public enum TimeUnit {
         SECS("secs"),
         MINS("mins"),
         HOURS("hours");
 
         public final String name;
+
         TimeUnit(String text) {
             this.name = text;
         }
+
         public String toString() {
             return name;
         }
@@ -41,9 +41,11 @@ public class Step extends Observable implements Observer, ActionListener {
         ML("ml");
 
         public final String name;
+
         VolumeUnit(String text) {
             this.name = text;
         }
+
         public String toString() {
             return name;
         }
@@ -55,12 +57,12 @@ public class Step extends Observable implements Observer, ActionListener {
     public static final String EXPIRE_TEXT = "Remove step";
     public static final String EXCHANGE_STATUS_CHANGED = "Exchange status changed";
 
-    private FlowLayout step_layout = new FlowLayout(FlowLayout.LEADING);
+    private FlowLayout step_layout = new FlowLayout(FlowLayout.LEADING); // LEADING=3：从开始处对齐
     private JPanel step = new JPanel(step_layout);
     private JLabel numberLabel = new JLabel("");
     private JTextField name;
-    private JCheckBox suck = new JCheckBox("Wd",false);
-    private JTextField time;
+    private JCheckBox suck = new JCheckBox("Wd", false);
+    private final JTextField time;
     private JComboBox timeUnitsList;
     private JCheckBox exchange = new JCheckBox("Ex");
     private JComboBox pumpList;
@@ -68,8 +70,8 @@ public class Step extends Observable implements Observer, ActionListener {
     private FlowRateSlider rateSlider;
     private JTextField volume;
     private JComboBox volumeUnitsList;
-    private JLabel peristalticLabel = new JLabel("secs.");
-    private JComboBox action = new JComboBox(Pump.Action.values());
+    private final JLabel peristalticLabel = new JLabel("secs");
+    private JComboBox action = new JComboBox(Pump.Action.values()); //枚举类型
     private int number;
 
     private boolean editing = false;
@@ -80,12 +82,11 @@ public class Step extends Observable implements Observer, ActionListener {
     }
 
     public Step(int num) {
-        this(num,"Name",true,false,1,TimeUnit.SECS, Syringe.PERISTALTIC,500,VolumeUnit.ML, Pump.Action.Infuse);
+        this(num, "Name", true, false, 1, TimeUnit.SECS, Syringe.PERISTALTIC, 500, VolumeUnit.ML, Pump.Action.Infuse);
     }
 
     Step(int num, String name, boolean suck, boolean exchange, int time, TimeUnit timeUnit,
-         Syringe syringe, double volume, VolumeUnit volumeUnit, Pump.Action action)
-    {
+         Syringe syringe, double volume, VolumeUnit volumeUnit, Pump.Action action) {
 
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -117,7 +118,7 @@ public class Step extends Observable implements Observer, ActionListener {
         timeUnitsList.setSelectedIndex(timeUnit.ordinal());
         step.add(timeUnitsList);
 
-        String pumps[];
+        String[] pumps;
         if (pumpManager.noPumpsConnected())
             pumps = new String[]{PumpManager.NO_PUMP_CONNECTED};
         else
@@ -133,18 +134,18 @@ public class Step extends Observable implements Observer, ActionListener {
         step.add(pumpList);
 
         rateSlider = new FlowRateSlider();
-        rateSlider.setPreferredSize(new Dimension(150,28));
+        rateSlider.setPreferredSize(new Dimension(150, 28)); //速度控制
         step.add(rateSlider);
 
         syringeList.setSelectedIndex(syringe.ordinal());
         syringeList.addActionListener(listener);
         step.add(syringeList);
 
-        this.volume = new JTextField(""+volume, 3);
+        this.volume = new JTextField("" + volume, 3);//初始加注体积
         step.add(this.volume);
 
-        volumeUnitsList = new JComboBox(VolumeUnit.values());
-        volumeUnitsList.setSelectedIndex(volumeUnit.ordinal());
+        volumeUnitsList = new JComboBox(VolumeUnit.values()); //enum.value获取枚举类型的值
+        volumeUnitsList.setSelectedIndex(volumeUnit.ordinal()); //enum.ordinal返回变量的位置
         step.add(volumeUnitsList);
         step.add(peristalticLabel);
 
@@ -164,14 +165,11 @@ public class Step extends Observable implements Observer, ActionListener {
             if (pumpManager.noPumpsConnected()) {
                 pumpList.removeAllItems();
                 pumpList.addItem(PumpManager.NO_PUMP_CONNECTED);
-            }
-            else {
+            } else {
                 editing = true;
                 pumpList.removeAllItems();
-                for (ConnectedSubPump pump: pumpManager.getConnectedPumpsList())
+                for (ConnectedSubPump pump : pumpManager.getConnectedPumpsList())
                     pumpList.addItem(pump.getFullName());
-
-
                 editing = false;
             }
 
@@ -198,8 +196,7 @@ public class Step extends Observable implements Observer, ActionListener {
                     pumpManager.anyPumpsConnected() &&
                     !editing)
                 rateSlider.setPumpSelection(pumpList.getSelectedIndex());
-        }
-        else if (e.getSource().equals(exchange)) {
+        } else if (e.getSource().equals(exchange)) {
             setChanged();
             notifyObservers(EXCHANGE_STATUS_CHANGED);
         }
@@ -212,7 +209,6 @@ public class Step extends Observable implements Observer, ActionListener {
         ButtonPanel() {
 
             int height = 21;
-
             int width = 21;
 
             ImageIcon up = new ImageIcon();
@@ -221,12 +217,12 @@ public class Step extends Observable implements Observer, ActionListener {
             ImageIcon expire = new ImageIcon();
             try {
                 up = new ImageIcon(Step.class.getResource("/up.png"));
-                down  = new ImageIcon(Step.class.getResource("/down.png"));
+                down = new ImageIcon(Step.class.getResource("/down.png"));
                 duplicate = new ImageIcon(Step.class.getResource("/duplicate.png"));
                 expire = new ImageIcon(Step.class.getResource("/expire.png"));
 
                 up = new ImageIcon(up.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
-                down  = new ImageIcon(down.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
+                down = new ImageIcon(down.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
                 duplicate = new ImageIcon(duplicate.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
                 expire = new ImageIcon(expire.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
 
@@ -258,7 +254,7 @@ public class Step extends Observable implements Observer, ActionListener {
             height = 24;
             width = height * 4;
 
-            this.setPreferredSize(new Dimension(width,height));
+            this.setPreferredSize(new Dimension(width, height));
         }
 
         class StepButton extends JButton {
@@ -316,20 +312,20 @@ public class Step extends Observable implements Observer, ActionListener {
 
     // Methods
 
-    public HashMap<String,String> getStepInformation() {
-        HashMap<String,String> info = new HashMap<String,String>();
+    public HashMap<String, String> getStepInformation() {
+        HashMap<String, String> info = new HashMap<String, String>();
         info.put("number", numberLabel.getText());
         info.put("exchange", "" + exchange.isSelected());
         info.put("pump", (String) pumpList.getSelectedItem());
-        info.put("name",name.getText());
+        info.put("name", name.getText());
         info.put("suck", "" + suck.isSelected());
-        info.put("time",time.getText());
-        info.put("timeUnits","" + timeUnitsList.getSelectedIndex());
-        info.put("syringe","" + syringeList.getSelectedIndex());
+        info.put("time", time.getText());
+        info.put("timeUnits", "" + timeUnitsList.getSelectedIndex());
+        info.put("syringe", "" + syringeList.getSelectedIndex());
         info.put("rate", "" + rateSlider.getSliderValue());
-        info.put("volume",volume.getText());
-        info.put("volumeUnits","" + volumeUnitsList.getSelectedIndex());
-        info.put("action","" + action.getSelectedIndex());
+        info.put("volume", volume.getText());
+        info.put("volumeUnits", "" + volumeUnitsList.getSelectedIndex());
+        info.put("action", "" + action.getSelectedIndex());
         return info;
     }
 
@@ -337,7 +333,7 @@ public class Step extends Observable implements Observer, ActionListener {
         pumpList.addActionListener(a);
     }
 
-    public void updateStepInformation(HashMap<String,String> givenInformation) {
+    public void updateStepInformation(HashMap<String, String> givenInformation) {
         String pump = givenInformation.get("pump");
 
         for (int i = 0; i < pumpList.getItemCount(); i++) {
@@ -370,11 +366,11 @@ public class Step extends Observable implements Observer, ActionListener {
 
     public int getDuration() {
         float duration = Float.parseFloat(time.getText());
-        if(timeUnitsList.getSelectedIndex() == TimeUnit.MINS.ordinal())
-            duration = duration*60;
-        else if(timeUnitsList.getSelectedIndex() == TimeUnit.HOURS.ordinal())
-            duration = duration*3600;
-        duration = (float) Math.floor( (double) duration);
+        if (timeUnitsList.getSelectedIndex() == TimeUnit.MINS.ordinal())
+            duration = duration * 60;
+        else if (timeUnitsList.getSelectedIndex() == TimeUnit.HOURS.ordinal())
+            duration = duration * 3600;
+        duration = (float) Math.floor((double) duration);
         return (int) duration;
     }
 

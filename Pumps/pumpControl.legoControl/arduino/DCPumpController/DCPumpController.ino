@@ -1,10 +1,7 @@
-/* 
-
+/*
 This is the firmware for an Arduino Uno to drive DC motor pumps through
 the Adafruit Motor Shield v2, while under control of our MicroManager
 plugins.
-
-© Pedro Almada, UCL, 2015
 
 Commands:
 g = get status of all pumps
@@ -35,7 +32,7 @@ Our testing with 1 ml syringe tells us the speed will correspond to:
 //// Settings
 
 // Number of shields (MAX: 9)
-const int nShields = 4;
+const int nShields = 2; // we use 2 shields
 // Number of DC motors per shield (MAX on Adafruit Motor Shield v2: 4)
 const int nMotorsPerShield = 4;
 // Character which signals end of message from PC
@@ -111,6 +108,7 @@ void loop() {
        timeCounter = false;
     }
   }
+  
   // If there is a message from the serial port
   if (Serial.available() > 0) {
      
