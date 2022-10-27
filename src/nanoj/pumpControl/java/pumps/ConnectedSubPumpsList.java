@@ -1,17 +1,19 @@
 package nanoj.pumpControl.java.pumps;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Iterator; //迭代器
 
 public class ConnectedSubPumpsList implements Iterable<ConnectedSubPump> {
-    private ArrayList<ConnectedSubPump> list = new ArrayList<ConnectedSubPump>(); // 存储连接的subPump
-    private ArrayList<Pump> connectedPumps = new ArrayList<Pump>(); // 存储连接的Pump
+    private ArrayList<ConnectedSubPump> list = new ArrayList<ConnectedSubPump>(); //存储连接的subPump
+    private ArrayList<Pump> connectedPumps = new ArrayList<Pump>(); //存储连接的Pump
 
     private static final String OUT_OF_BOUNDS = "SubPump index doesn't exist in list.";
 
+    //判断subPump是否存在
     public boolean notPresent(int index) {
         return index >= list.size() || index < 0;
     }
+
 
     public void addPump(Pump pump) {
         for (String subPump : pump.subPumps)
@@ -20,8 +22,7 @@ public class ConnectedSubPumpsList implements Iterable<ConnectedSubPump> {
     }
 
     /**
-     * 这个方法用来移除Pump当指定某个pumpName和port断开连接时
-     *
+     * 这个方法用来移除Pump当指定某个pumpNam和port断开连接时
      * @param pumpName：Pump名称
      * @param port：端口名（COM）
      */
@@ -32,7 +33,7 @@ public class ConnectedSubPumpsList implements Iterable<ConnectedSubPump> {
                 pumpsToRemove.add(pump);
 
         for (ConnectedSubPump pumpToRemove : pumpsToRemove) //在ConnectedSubPump中移除掉断开连接的subPump
-            list.remove(pumpToRemove);
+            list.remove(pumpToRemove); //remove删除元素
 
         for (ConnectedSubPump pump : list)
             if (pump.name.equals(pumpName) && pump.port.equals(port)) {
@@ -43,7 +44,6 @@ public class ConnectedSubPumpsList implements Iterable<ConnectedSubPump> {
 
     /**
      * 这个方法用来移除Pump当断开连接时
-     *
      * @param pump:
      */
     public void removePump(Pump pump) {
@@ -111,7 +111,7 @@ public class ConnectedSubPumpsList implements Iterable<ConnectedSubPump> {
     }
 
     public String[] getAllFullNames() {
-        String array[] = new String[list.size()];
+        String[] array = new String[list.size()];
         if (list.isEmpty())
             return new String[]{};
         else {

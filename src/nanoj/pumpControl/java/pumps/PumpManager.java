@@ -8,10 +8,10 @@ public class PumpManager extends Observable implements Observer {
     private CMMCore serialManager;
     private LinkedHashMap<String, Pump> availablePumps = new LinkedHashMap<String, Pump>();
     private ConnectedSubPumpsList connectedSubPumps = new ConnectedSubPumpsList();
-    private boolean alive = true;
+    private final boolean alive = true;
     private String status;
 
-    private long wait = 100;  // Wait time for status checker in milliSeconds
+    private final long wait = 100;  // Wait time for status checker in milliSeconds
 
     public static final String FAILED_TO_CONNECT = "Failed to connect to pump.";
     public static final String PORT_ALREADY_CONNECTED = "Port already in use.";

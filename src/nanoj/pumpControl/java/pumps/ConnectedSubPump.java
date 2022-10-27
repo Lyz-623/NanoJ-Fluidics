@@ -22,11 +22,11 @@ public class ConnectedSubPump {
         return subPump + ", " + port;
     }
 
-    public String[] asConnectionArray() {
+    public String[] asConnectionArray(){
         return new String[]{name,subPump,port};
     }
-
     public String[] asCalibrationArray() {
+        //referenceRates
         return new String[]{name,subPump,port,
                 ""+pump.referenceRates.get(subPump)[0],
                 ""+pump.referenceRates.get(subPump)[1],
